@@ -3,7 +3,7 @@ let timeLabels = [];
 let lineChart;
 
 async function loadData() {
-  const url = "https://www.taipower.com.tw/d006/loadGraph/loadGraph/data/loadpara.json";
+  const url = "./data/realtime.json?t=" + Date.now();
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) throw new Error("HTTP " + res.status);
 
@@ -21,44 +21,46 @@ async function loadData() {
   }
 
   const status = document.getElementById("status");
-  if (status) status.textContent = "最後更新時間：" + time;
-}
-
-async function renderRealtime() {
-  try {
-    await loadData();
-
-    if (lineChart) lineChart.destroy();
-
-    lineChart = new Chart(document.getElementById("lineChart"), {
-      type: "line",
-      data: {
-        labels: timeLabels,
-        datasets: [{
-          label: "即時用電量 (MW)",
-          data: loadHistory,
-          borderWidth: 2,
-          fill: false
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false
-      }
-    });
-  } catch (e) {
-    const status = document.getElementById("status");
-    if (status) status.textContent = "即時資料讀取失敗（請用 Live Server / GitHub Pages）";
+  if (status) {
+    status.textContent = "最後更新時間：" + time + "（真實資料，每 5 分鐘更新）";
   }
 }
 
+async function renderChart() {
+  await loadData();
+
+  if (lineChart) lineChart.destroy();
+
+  lineChart = new Chart(document.getElementById("lineChart"), {
+    type: "line",
+    data: {
+      labels: timeLabels,
+      datasets: [{
+        label: "即時用電量（MW）",
+        data: loadHistory,
+        borderWidth: 2,
+        tension: 0.3,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+}
+
+// 匯出 PNG
 document.getElementById("export").onclick = () => {
   if (!lineChart) return;
   const a = document.createElement("a");
   a.href = lineChart.toBase64Image();
-  a.download = "realtime_power.png";
+  a.download = "taipower_realtime.png";
   a.click();
 };
 
-renderRealtime();
-setInterval(renderRealtime, 60000);
+// 初始載入
+renderChart();
+
+// 每 60 秒刷新畫面（資料來源 5 分鐘更新一次）
+setInterval(renderChart, 60000);
