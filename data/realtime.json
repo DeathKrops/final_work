@@ -4,12 +4,5 @@
     curl -L "https://www.taipower.com.tw/d006/loadGraph/loadGraph/data/loadpara.json" \
       -H "User-Agent: Mozilla/5.0" \
       -H "Accept: application/json" \
-      -o data/tmp.json
-
-    # 只在確定是 JSON 時才覆蓋
-    if grep -q '"records"' data/tmp.json; then
-      mv data/tmp.json data/realtime.json
-    else
-      echo "Not valid JSON, keep old data"
-      rm data/tmp.json
-    fi
+      --fail-with-body \
+      -o data/realtime.json || true
