@@ -1,0 +1,47 @@
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: "Microsoft JhengHei", sans-serif;
+  background: #0e1328;
+  color: #eaeaff;
+}
+
+h1 {
+  margin-bottom: 16px;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+input {
+  padding: 4px;
+}
+
+button {
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  max-width: 900px;
+}
+
+canvas {
+  background: #151c3d;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.desc {
+  margin-top: 20px;
+  color: #bfc6ff;
+  max-width: 900px;
+  line-height: 1.6;
+}

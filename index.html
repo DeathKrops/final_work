@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>期末報告－即時用電監測</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <h1>台灣即時用電監測</h1>
+
+  <div class="controls">
+    <span id="status">連線中…</span>
+    <button id="export">匯出 PNG</button>
+  </div>
+
+  <div class="charts">
+    <canvas id="lineChart"></canvas>
+  </div>
+
+  <p class="desc">
+    本系統串接台電官方即時電力資料（JSON），每 60 秒更新一次，
+    並以折線圖呈現最近 20 筆用電變化，提供即時監測與匯出功能。
+  </p>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
