@@ -9,17 +9,19 @@ async function loadData() {
 
   const data = await res.json();
 
-  // 你的 JSON 結構：data.result.records[0].curr_load
-  const records = data?.result?.records;
+  // ✅ 正確結構：data.records
+  const records = data.records;
   if (!Array.isArray(records) || records.length < 2) {
     throw new Error("records not found");
   }
 
-  const rawLoad = records[0]?.curr_load;           // "2374.2"
-  const rawTime = records[1]?.publish_time;        // "115.01.01(四)23:50"
+  const rawLoad = records[0]?.curr_load;      // "2374.2"
+  const rawTime = records[1]?.publish_time;   // "115.01.01(四)23:50"
 
   const load = parseFloat(String(rawLoad).replace(/,/g, ""));
-  if (!Number.isFinite(load)) throw new Error("invalid curr_load: " + rawLoad);
+  if (!Number.isFinite(load)) {
+    throw new Error("invalid curr_load: " + rawLoad);
+  }
 
   const time = String(rawTime || new Date().toLocaleString());
 
@@ -32,7 +34,9 @@ async function loadData() {
   }
 
   const status = document.getElementById("status");
-  if (status) status.textContent = "最後更新時間：" + time + "（真實資料，每 5 分鐘更新）";
+  if (status) {
+    status.textContent = "最後更新時間：" + time + "（真實資料，每 5 分鐘更新）";
+  }
 }
 
 async function renderChart() {
